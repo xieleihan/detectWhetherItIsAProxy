@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import '@/styles/layout/Modules/PagesFooter.scss';
 
 // 假设你在 .env 中定义了：VITE_CREATION_TIME="2025-01-01T00:00:00+08:00"
-const CREATION_TIME = import.meta.env.VITE_CREATION_TIME || '2025-08-08T18:00:00+08:00';
+const CREATION_TIME =  '2025-08-08T18:00:00+08:00';
 
 function PagesFooter() {
     const [time, setTime] = useState({
