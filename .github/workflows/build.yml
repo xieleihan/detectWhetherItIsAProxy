@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-        working-directory: ./front
+        working-directory: ./
 
       - name: Create .env file
         run: |
@@ -38,16 +38,16 @@ jobs:
 
       - name: Install terser
         run: npm install --save-dev terser
-        working-directory: ./front
+        working-directory: ./
 
       - name: Build
         run: npm run build
-        working-directory: ./front
+        working-directory: ./
 
       - name: Upload dist folder
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./front/dist
+          path: ./dist
 
   deploy:
     needs: build
