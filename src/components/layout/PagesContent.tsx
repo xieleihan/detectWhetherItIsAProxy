@@ -5,6 +5,7 @@ import JsonTable from '../JsonTable';
 import { Button, Card, Spin, Statistic } from 'antd';
 import { useState } from 'react';
 import ListCom from '../ListCom';
+import GoogleAd from '../GoogleAd';
 
 function PagesContent() {
     // 获取Redux中的ipinfo状态
@@ -41,6 +42,7 @@ function PagesContent() {
                             </div>
                         </Spin>
                     </Card>
+                    <GoogleAd slot='9546718264' />
                 </div>
 
                 {/* 列表 */}
