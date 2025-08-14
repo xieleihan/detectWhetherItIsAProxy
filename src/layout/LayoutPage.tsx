@@ -6,6 +6,7 @@ import PagesContent from '@/components/layout/PagesContent';
 import PagesFooter from '@/components/layout/PagesFooter';
 
 function LayoutPages() {
+
     return (
         <>
             <Layout className='layout'>

@@ -20,6 +20,12 @@
             vertical-align: bottom;
             font-weight: 400;
         }
+
+        @media (max-width: 450px) {
+            .desc{
+                display: none;
+            }
+        }
     }
     .functionBox{
         .superlink{

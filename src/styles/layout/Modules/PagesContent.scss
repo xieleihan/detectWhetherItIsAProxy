@@ -15,4 +15,12 @@
         height: 32px !important;
         min-height: 32px;
     }
+    .score{
+        width: 100%;
+        display: flex;
+        padding: 0 5rem;
+        .card{
+            width: 20%;
+        }
+    }
 }

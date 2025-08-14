@@ -63,7 +63,14 @@ function calculateTimeDiffRatio(browserTimeStr, serverTimeStr) {
     return ratio;
 }
 
-function ListCom() {
+function riskToScore(risk: boolean | number | string): number {
+    if (typeof risk === 'boolean') return risk ? 20 : 80;
+    if (typeof risk === 'number') return Math.max(0, Math.min(100, 100 - risk * 100));
+    if (typeof risk === 'string') return risk === 'business' ? 30 : 80;
+    return 0;
+}
+
+function ListCom({prop}: { prop: (data: number) => void }) {
     const ipinfo = useSelector((state: RootState) => state.ipinfo);
     const [browserNowTime, setBrowserNowTime] = useState<string>('');
     const { mylocation, openGeolocation } = useGeolocation();
@@ -89,6 +96,45 @@ function ListCom() {
             setBrowserLongitude(parseFloat(mylocation.longitude.toFixed(6)));
         } 
     }, [mylocation]);
+
+    // 计算各项风险分数
+    const scores: number[] = [
+        riskToScore(ipinfo.is_datacenter),
+        riskToScore(ipinfo.is_tor),
+        riskToScore(ipinfo.is_proxy),
+        riskToScore(ipinfo.is_vpn),
+        riskToScore(ipinfo.is_abuser),
+        riskToScore(!ipinfo.is_mobile),
+        riskToScore(ipinfo.is_satellite),
+        riskToScore(ipinfo.is_crawler),
+        riskToScore(parseFloat(ipinfo.company.abuser_score)),
+        riskToScore(ipinfo.company.type)
+    ];
+
+    // 时间差分数
+    const timeRatio = calculateTimeDiffRatio(browserNowTime, ipinfo.location.local_time.toString());
+    const timeScore = Math.max(0, 100 - timeRatio * 100);
+    scores.push(timeScore);
+
+    // 地理位置分数
+    let geoScore = 50;
+    if (browserLatitude !== null && browserLongitude !== null) {
+        const distance = Math.sqrt(
+            Math.pow(ipinfo.location.latitude - browserLatitude, 2) +
+            Math.pow(ipinfo.location.longitude - browserLongitude, 2)
+        );
+        geoScore = distance < 0.3 ? 80 : 30;
+    }
+    scores.push(geoScore);
+
+    const totalScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    console.log('当前风险评分:', totalScore);
+
+    // 通过回调函数将分数传递给父组件
+    useEffect(() => {
+        console.log('当前风险评分:', totalScore);
+        prop(totalScore);
+    }, [totalScore]);
 
     return (
         <>
