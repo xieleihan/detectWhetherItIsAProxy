@@ -42,7 +42,9 @@ function PagesContent() {
                             </div>
                         </Spin>
                     </Card>
-                    <GoogleAd slot='9546718264' />
+                    <div style={{flex:1}}>
+                        <GoogleAd slot='9546718264' />
+                    </div>
                 </div>
 
                 {/* 列表 */}
